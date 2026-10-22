@@ -1,0 +1,64 @@
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app_net
+    restart: unless-stopped
+    cpus: "0.10"
+    mem_limit: 16m
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.good
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: lab0
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_net
+      - db_net
+    restart: unless-stopped
+    cpus: "0.25"
+    mem_limit: 24m
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: lab0
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d lab0"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - db_net
+    restart: unless-stopped
+    cpus: "0.25"
+    mem_limit: 64m
+
+volumes:
+  postgres_data:
+
+networks:
+  app_net:
+  db_net:
+    internal: true

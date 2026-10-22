@@ -1,0 +1,8 @@
+FROM python:latest
+WORKDIR /app
+USER root
+RUN apt-get update && apt-get install -y build-essential
+COPY . .
+RUN pip install -r requirements.txt
+EXPOSE 5000
+CMD ["python", "backend/app.py"]
