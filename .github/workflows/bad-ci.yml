@@ -1,0 +1,36 @@
+name: Bad CI-CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          pip install -r lab03/requirements.txt
+
+      - name: Run lint
+        run: |
+          python -m flake8 lab03
+
+      - name: Run tests
+        run: |
+          python -m pytest lab03/tests -v
+
+      - name: Deploy
+        run: |
+          echo "Deploying application..."
