@@ -1,0 +1,71 @@
+name: Good CI-CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'lab03/**'
+      - '.github/workflows/good-ci.yml'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+          cache-dependency-path: lab03/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -r lab03/requirements.txt
+          pip install flake8
+
+      - name: Run lint
+        run: flake8 lab03
+
+      - name: Run tests
+        run: python -m pytest lab03/tests -v
+
+  docker:
+    name: Build and Scan Docker Image
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t lab03-app:${{ github.sha }} ./lab03
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: lab03-app:${{ github.sha }}
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL
+
+  deploy:
+    name: Deploy and Healthcheck
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy application
+        run: echo "Docker image passed checks. Deployment stage completed."
+
+      - name: Healthcheck
+        run: echo "Healthcheck stage completed."

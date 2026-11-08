@@ -52,7 +52,11 @@ def get_tasks():
 def create_task():
     data = request.get_json()
 
-    if not data or not isinstance(data.get("title"), str) or not data["title"].strip():
+    if (
+            not data
+            or not isinstance(data.get("title"), str)
+            or not data["title"].strip()
+    ):
         return jsonify({"error": "title is required"}), 400
 
     with get_connection() as conn:
