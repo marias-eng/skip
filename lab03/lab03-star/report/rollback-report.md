@@ -1,4 +1,8 @@
-# Отчёт: демонстрация механизма Rollback
+# Демонстрация механизма Rollback или отчет по части со звездочкой*
+
+Ко времени написания этой части отчета, у меня не осталось сил на мемы, так что просто теория(((
+
+<img width="735" height="545" alt="image" src="https://github.com/user-attachments/assets/d868dfe7-16af-42e7-aa40-22cd8db7e85f" />
 
 ## 1. Цель работы
 
@@ -19,9 +23,8 @@
 
 При попытке обратиться к endpoint `/health` сервер оказался недоступен. Это подтвердило, что неисправная версия приложения не может обслуживать запросы.
 
-*Рисунок 1 — Остановка неисправного контейнера.*
-
-*Рисунок 2 — Ошибка при обращении к endpoint /health.*
+<img width="1280" height="219" alt="image" src="https://github.com/user-attachments/assets/d6be059d-37d7-42e5-a3e8-0faffb762a81" />
+<img width="1280" height="492" alt="image" src="https://github.com/user-attachments/assets/bcbf5d5e-3e4b-4661-81e5-09d9182481ec" />
 
 ## 4. Выполнение отката
 
@@ -37,7 +40,9 @@
 
 При успешном выполнении скрипт выводит сообщение `Rollback successful!`.
 
-*Рисунок 3 — Успешное выполнение скрипта отката.*
+<img width="1280" height="110" alt="image" src="https://github.com/user-attachments/assets/bacea299-e62e-4da1-9957-329af58ed54d" />
+<img width="1280" height="473" alt="image" src="https://github.com/user-attachments/assets/2cecb2d6-a53b-4840-9162-45a166b96f2f" />
+
 
 ## 5. Проверка восстановленной версии
 
@@ -51,7 +56,10 @@ HTTP-статус ответа — `200 OK`. Это подтверждает, ч
 
 Время восстановления при последнем запуске скрипта составило **1,80 секунды**.
 
-*Рисунок 4 — Успешная проверка endpoint /health после отката.*
+<img width="823" height="219" alt="image" src="https://github.com/user-attachments/assets/c8c9deac-6d05-497f-888e-2faa7b05f289" />
+
+<img width="1280" height="703" alt="image" src="https://github.com/user-attachments/assets/7b8c5b77-98fe-43eb-9e0b-eb7ebfb76e7b" />
+
 
 ## 6. Вывод
 
@@ -60,3 +68,7 @@ HTTP-статус ответа — `200 OK`. Это подтверждает, ч
 Была смоделирована ситуация отказа приложения, после чего выполнено восстановление предыдущей рабочей версии. Работоспособность восстановленного приложения подтверждена успешным ответом endpoint `/health`.
 
 Таким образом, механизм отката позволяет быстро вернуть приложение к рабочему состоянию в случае возникновения проблем после обновления. В данной работе восстановление выполнялось локально и вручную с помощью PowerShell-скрипта.
+
+<img width="450" height="300" alt="image" src="https://github.com/user-attachments/assets/d3a6ef55-5c90-4158-9d24-2ed505168c5d" />
+
+<img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/612f19cb-17ca-47e2-90a3-ade4fdd80b9c" />
